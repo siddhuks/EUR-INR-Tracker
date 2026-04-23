@@ -10,7 +10,7 @@ FROM_WHATSAPP = "whatsapp:+14155238886"
 TO_WHATSAPP   = "whatsapp:+91XXXXXXXXX"  # your Indian number
 
 THRESHOLD     = 0.25
-STATE_FILE    = "/home/ihavaldar/eur_inr_state.json"
+STATE_FILE = "/tmp/eur_inr_state.json"
 # ────────────────────────────────────────────────────────
 
 def is_active_period():
