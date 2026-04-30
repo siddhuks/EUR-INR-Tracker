@@ -4,10 +4,15 @@ import os
 from datetime import date
 
 # ── CONFIG ──────────────────────────────────────────────
-TWILIO_SID    = "PASTE_YOUR_SID_HERE"
-TWILIO_TOKEN  = "PASTE_YOUR_TOKEN_HERE"
+# TWILIO_SID    = "PASTE_YOUR_SID_HERE"
+# TWILIO_TOKEN  = "PASTE_YOUR_TOKEN_HERE"
+# FROM_WHATSAPP = "whatsapp:+14155238886"
+# TO_WHATSAPP   = "whatsapp:+91XXXXXXXXX"  # your Indian number
+
+TWILIO_SID    = os.getenv("TWILIO_SID")
+TWILIO_TOKEN  = os.getenv("TWILIO_TOKEN")
 FROM_WHATSAPP = "whatsapp:+14155238886"
-TO_WHATSAPP   = "whatsapp:+91XXXXXXXXX"  # your Indian number
+TO_WHATSAPP   = os.getenv("TO_WHATSAPP")
 
 THRESHOLD     = 0.01
 STATE_FILE = "eur_inr_state.json"
@@ -101,4 +106,5 @@ def main():
     print(f"Checked. Rate: {rate} | High: {state['day_high']} | Low: {state['day_low']}")
 
 if __name__ == "__main__":
+    print("DEBUG → SID exists:", bool(TWILIO_SID))
     main()
