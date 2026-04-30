@@ -1,19 +1,45 @@
 name: EUR INR Tracker
 
 on:
+schedule:
+- cron: "0 * * * *"
 workflow_dispatch:
 
 jobs:
 run-tracker:
 runs-on: ubuntu-latest
+
 steps:
-- uses: actions/checkout@v3
-- uses: actions/setup-python@v4
-with:
-python-version: "3.11"
-- run: pip install requests twilio
-- run: python tracker.py
-env:
-TWILIO_SID: ${{ secrets.TWILIO_SID }}
-TWILIO_TOKEN: ${{ secrets.TWILIO_TOKEN }}
-TO_WHATSAPP: ${{ secrets.TO_WHATSAPP }}
+  - name: Checkout repo
+    uses: actions/checkout@v3
+
+  - name: Set up Python
+    uses: actions/setup-python@v4
+    with:
+      python-version: "3.11"
+
+  - name: Restore state cache
+    uses: actions/cache@v3
+    with:
+      path: eur_inr_state.json
+      key: eur-inr-state-${{ github.run_id }}
+      restore-keys: |
+        eur-inr-state-
+
+  - name: Install dependencies
+    run: |
+      pip install requests twilio
+
+  - name: Run tracker
+    env:
+      TWILIO_SID: ${{ secrets.TWILIO_SID }}
+      TWILIO_TOKEN: ${{ secrets.TWILIO_TOKEN }}
+      TO_WHATSAPP: ${{ secrets.TO_WHATSAPP }}
+    run: |
+      python tracker.py
+
+  - name: Save state cache
+    uses: actions/cache@v3
+    with:
+      path: eur_inr_state.json
+      key: eur-inr-state-${{ github.run_id }}
